@@ -1,4 +1,3 @@
 FROM postgres
-ENV POSTGRES_PASSWORD docker
-ENV POSTGRESS_DB starchaser
-COPY starchaser.sql /docker-enterypoint-initdb.d/
+ENV POSTGRES_PASSWORD=docker
+ADD ./starchaser.sql /docker-entrypoint-initdb.d/

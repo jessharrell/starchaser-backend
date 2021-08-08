@@ -20,7 +20,7 @@ then
     then 
         docker start starchaser-db
     fi
-    echo "starchaser-db IS RUNNING."
+    docker logs starchaser-db
 else
     echo "starchaser-db ALREADY RUNNING"
 fi

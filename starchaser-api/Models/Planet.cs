@@ -2,7 +2,7 @@
 {
     public class Planet
     {
-        public int Id { get; set; }
+        public int PlanetId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
     }
