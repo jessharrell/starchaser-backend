@@ -10,14 +10,14 @@ namespace starchaser_api
 {
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+        private const string _corsOrigins = "AllowedCORSOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IDatabaseConnectionService, DatabaseConnectionService>();
@@ -26,28 +26,30 @@ namespace starchaser_api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "starchaser_api", Version = "v1" });
             });
+
+            services.AddCors();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
+                app.UseCors(options => { options.SetIsOriginAllowed( origin => origin.Contains("localhost")).AllowAnyMethod().AllowAnyHeader().AllowCredentials(); });
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "starchaser_api v1"));
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            
         }
     }
 }
